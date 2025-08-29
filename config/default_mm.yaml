@@ -1,0 +1,57 @@
+data:
+    data_dir:         ./remi_dataset_all
+    train_split:      ./pickles_old/train_pieces.pkl
+    val_split:        ./pickles_old/val_pieces.pkl
+    test_split:       ./pickles_old/test_pieces.pkl
+    vocab_path:       ./pickles_old/remi_vocab.pkl
+    max_bars:         16                 
+    enc_seqlen:       128
+    dec_seqlen:       1280               
+    batch_size:       4
+
+model:
+    enc_n_layer:      12
+    enc_n_head:       8
+    enc_d_model:      512
+    enc_d_ff:         2048
+    dec_n_layer:      12
+    dec_n_head:       8
+    dec_d_model:      512
+    dec_d_ff:         2048
+    d_embed:          512
+    d_latent:         128
+    d_polyph_emb:     64
+    d_rfreq_emb:      64
+    cond_mode:        in-attn
+    pretrained_params_path:      /root/MuseMorphose_Final/ckpt/ping_test_all/params/step_48000-RC_0.216-KL_0.237-model.pt
+    pretrained_optim_path:       /root/MuseMorphose_Final/ckpt/ping_test_all/optim/step_48000-RC_0.216-KL_0.237-optim.pt
+    use_attr_cls: True
+    compound: False
+    d_composer_emb:   128
+
+training:
+    device:           cuda:0
+    ckpt_dir:         ./ckpt/ping_test_all
+    trained_steps:    48000
+    max_epochs:       158
+    max_lr:           1.0e-4
+    min_lr:           5.0e-6
+    lr_warmup_steps:  200
+    lr_decay_steps:   150000
+    no_kl_steps:      10000
+    kl_cycle_steps:   5000
+    kl_max_beta:      1.0
+    free_bit_lambda:  0.25
+    constant_kl:      False
+    ckpt_interval:    4000
+    log_interval:     10
+    val_interval:     100
+
+generate:
+    temperature:                0.9
+    nucleus_p:                  0.7
+    use_latent_sampling:        False
+    latent_sampling_var:        0.0
+    max_bars:                   16       # could be set to match the longest input piece during generation (inference)
+    dec_seqlen:                 1280     # could be set to match the longest input piece during generation (inference)
+    max_input_dec_seqlen:       1024     # should be set to equal to or less than `dec_seqlen` used during training
